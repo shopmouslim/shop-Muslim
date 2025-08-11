@@ -1,41 +1,425 @@
-# Shop Muslim — منصة التسوق الهادفة 🌙
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop Muslim — الصفحة الرئيسية</title>
+  <meta name="description" content="Shop Muslim — متجر إلكتروني لبيع الملابس الرياضية والإلكترونيات. تصفح المنتجات، أرسل ملاحظات، وادعمنا." />
+  <style>
+    :root {
+      --bg: #f9f9f7; /* خلفية فاتحة مريحة */
+      --card: #ffffff;
+      --accent-red: #d32f2f;
+      --accent-green: #2e7d32;
+      --text: #222222; /* لون نص داكن وواضح */
+      --muted: #6b6b6b;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(90deg, var(--card), var(--card));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .logo {
+      font-weight: 700;
+      color: var(--accent-green);
+      font-size: 1.25rem;
+    }
+    .menu-btn {
+      background: none;
+      border: 0;
+      font-size: 1.6rem;
+      color: var(--accent-red);
+      cursor: pointer;
+      padding: 6px;
+    }
+    /* القائمة الجانبية */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 320px;
+      height: 100%;
+      background: var(--card);
+      box-shadow: -12px 0 24px rgba(0,0,0,0.12);
+      transition: right 0.28s ease;
+      padding: 20px;
+      z-index: 1200;
+      overflow: auto;
+      direction: rtl;
+    }
+    .side-menu.open {
+      right: 0;
+    }
+    .side-menu h3 {
+      margin: 0 0 12px;
+      color: var(--accent-green);
+    }
+    .side-menu a,
+    .side-menu .submenu-toggle {
+      display: block;
+      padding: 12px 10px;
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .side-menu a:hover,
+    .side-menu .submenu-toggle:hover {
+      background: rgba(46,125,50,0.08);
+    }
+    .side-close {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      border: 0;
+      background: none;
+      font-size: 1.6rem;
+      color: var(--accent-red);
+      cursor: pointer;
+    }
+    /* القوائم الفرعية */
+    .submenu {
+      display: none;
+      padding-right: 16px;
+      margin-bottom: 12px;
+      border-right: 2px solid var(--accent-green);
+    }
+    .submenu a {
+      margin-bottom: 4px;
+      padding: 6px 10px;
+      font-size: 0.95rem;
+    }
+    .submenu.open {
+      display: block;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 0 16px;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .search {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .search input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: white;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .filter-btn {
+      background: var(--accent-green);
+      color: white;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, var(--accent-red), #ff6b6b);
+      color: white;
+      padding: 26px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+    .hero p {
+      margin: 6px 0 0;
+      color: rgba(255,255,255,0.95);
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card .img {
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+    .card .body {
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      color: var(--accent-red);
+      font-size: 1rem;
+    }
+    .price {
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-top: auto;
+    }
+    .desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin: 6px 0;
+    }
+    .card button {
+      margin-top: 10px;
+      background: var(--accent-green);
+      color: white;
+      border: 0;
+      padding: 9px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1400;
+      padding: 20px;
+    }
+    .modal.open {
+      display: flex;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 880px;
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+    }
+    .modal-left {
+      padding: 12px;
+      position: relative;
+    }
+    .gallery-main {
+      height: 360px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 6px;
+      border: 1px solid #eee;
+    }
+    .thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .thumb {
+      width: 64px;
+      height: 64px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .modal-right {
+      padding: 18px;
+    }
+    .close-modal {
+      background: none;
+      border: 0;
+      font-size: 1.6rem;
+      color: var(--accent-red);
+      cursor: pointer;
+      position: absolute;
+      right: 18px;
+      top: 14px;
+    }
+    footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      padding: 18px 8px;
+    }
+    @media (max-width: 820px) {
+      .modal-box {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
 
-مرحباً بك في **Shop Muslim**، حيث نقدم لك تجربة تسوق فريدة تجمع بين الأناقة والمبادئ!
+  <header>
+    <div class="logo">Shop Muslim</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">&#9776;</button>
+    </div>
+  </header>
 
----
+  <!-- Side menu -->
+  <aside class="side-menu" id="sideMenu" aria-hidden="true">
+    <button class="side-close" id="closeSide" aria-label="Close menu">&times;</button>
+    <h3>الأقسام</h3>
+    <a href="#" data-filter="all">جميع المنتجات</a>
 
-## ماذا نقدم؟
+    <a class="submenu-toggle" id="sportsToggle">رياضة &#9662;</a>
+    <div class="submenu" id="sportsSubmenu">
+      <a href="#" data-filter="football">كرة القدم</a>
+      <a href="#" data-filter="basketball">كرة السلة</a>
+      <a href="#" data-filter="handball">كرة اليد</a>
+      <a href="#" data-filter="volleyball">الكرة الطائرة</a>
+      <a href="#" data-filter="running">الجري</a>
+      <a href="#" data-filter="calisthenics">كاليستينكس</a>
+      <a href="#" data-filter="weightlifting">رفع الأثقال</a>
+    </div>
 
-نحن منصة تهدف لتحقيق ربح من خلال عرض منتجات لا تدعم الكيان الصهيوني الذي يقتل الأطفال الأبرياء في غزة، ويجوع النساء، ويمارس القتل والتعذيب بلا رحمة.
+    <a href="#" data-filter="electronics">إلكترونيات</a>
+    <a href="#" data-filter="health">الصحة والجمال</a>
+    <a href="#" data-filter="books">كتب</a>
 
-نضمن لك أن كل منتج موجود لدينا لا يدعم هذا الكيان، ونلتزم بمقاطعة كل ما له علاقة به.
+    <a href="https://forms.gle/ty9r2ZsSYbGc3nyY7" target="_blank" rel="noopener noreferrer">الدعم — ملاحظات / شكوى</a>
+    <hr>
+    <p style="color: var(--muted); font-size: 0.95rem;">اتصل بنا: <a href="mailto:your-email@gmail.com">your-email@gmail.com</a></p>
+  </aside>
 
----
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Shop Muslim</h1>
+        <p>تاجر موثوق للرياضة والإلكترونيات — جودة وأسعار عادلة.</p>
+      </div>
+      <div>
+        <small style="background: var(--card); padding: 8px 12px; border-radius: 8px; color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.06);">دعم وملاحظات مجانية</small>
+      </div>
+    </section>
 
-## رسالتنا
+    <div class="controls">
+      <div class="search">
+        <input id="searchInput" placeholder="ابحث عن المنتجات..." />
+      </div>
+      <button class="filter-btn" id="showAll">عرض الكل</button>
+    </div>
 
-إذا نجح مشروعنا، سنخصص جزءاً من أرباحنا لدعم أهل غزة الصامدين، فهدفنا ليس فقط الربح، بل العدالة والإنسانية.
+    <section class="products" id="productsGrid">
+      <p style="grid-column:1/-1; text-align:center; color: var(--muted); font-size:1rem;">لا توجد منتجات معروضة حالياً.</p>
+    </section>
 
----
+    <footer>
+      © <span id="year"></span> Shop Muslim — جميع الحقوق محفوظة.
+    </footer>
+  </main>
 
-## لماذا تختارنا؟
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const closeSide = document.getElementById('closeSide');
 
-- منتجات آمنة وملتزمة بمبادئ المقاطعة.
-- دعم مباشر للقضية الفلسطينية.
-- تجربة تسوق سهلة وآمنة.
-- نضع قيمنا وأخلاقنا قبل كل شيء.
+    menuBtn.addEventListener('click', () => {
+      sideMenu.classList.add('open');
+      sideMenu.setAttribute('aria-hidden', 'false');
+    });
 
----
+    closeSide.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+      sideMenu.setAttribute('aria-hidden', 'true');
+    });
 
-## تواصل معنا
+    // التحكم في القائمة الفرعية لقسم الرياضة
+    const sportsToggle = document.getElementById('sportsToggle');
+    const sportsSubmenu = document.getElementById('sportsSubmenu');
 
-هل لديك أي استفسار أو ملاحظات؟ لا تتردد في التواصل عبر البريد:  
-📧 shopmouslim@gmail.com
----
+    sportsToggle.addEventListener('click', () => {
+      sportsSubmenu.classList.toggle('open');
+      if (sportsSubmenu.classList.contains('open')) {
+        sportsToggle.innerHTML = 'رياضة &#9652;'; // سهم لأعلى
+      } else {
+        sportsToggle.innerHTML = 'رياضة &#9662;'; // سهم لأسفل
+      }
+    });
 
-> الله أكبر، والحمد لله، وسبحان الله العظيم.
+    // تعيين السنة الحالية في الفوتر
+    document.getElementById('year').textContent = new Date().getFullYear();
 
----
+    // *** التعديل المطلوب فقط: تفعيل البحث وزر عرض الكل وإظهار رسالة عند البحث ***
 
-شكرًا لك لأنك جزء من هذه الرسالة. معاً نُحدث فرقاً.
+    // فعل مربع البحث وزر عرض الكل
+    const searchInput = document.getElementById('searchInput');
+    const showAllBtn = document.getElementById('showAll');
+    searchInput.disabled = false;
+    showAllBtn.disabled = false;
 
+    const productsGrid = document.getElementById('productsGrid');
+
+    function renderProducts(list) {
+      productsGrid.innerHTML = '';
+      if (list.length === 0) {
+        productsGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color: var(--muted); font-size:1rem;">لا توجد منتجات مطابقة.</p>`;
+        return;
+      }
+      // هنا في المستقبل يمكن تضيف عرض المنتجات
+    }
+
+    // حدث البحث
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.trim().toLowerCase();
+      // لأن المنتجات فارغة حالياً، نظهر رسالة دائماً
+      renderProducts([]);
+    });
+
+    // زر عرض الكل
+    showAllBtn.addEventListener('click', () => {
+      renderProducts([]);
+    });
+
+    // عرض أولي عند تحميل الصفحة
+    renderProducts([]);
+
+  </script>
+</body>
+</html>
